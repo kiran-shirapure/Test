@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Event:</strong>
+  <%= @bill.event %>
+</p>
+
+<!-- <p>
+  <strong>Date:</strong>
+  < % = @bill.date %>
+</p> -->
+
+<p>
+  <strong>Location:</strong>
+  <%= @bill.location %>
+</p>
+
+<p>
+  <strong>Total amount:</strong>
+  <%= @bill.total_amount %>
+</p>
+
+<p>
+  <strong>Splits in:</strong>
+  <%= User.where(:id.in => @bill.splits_in).collect{|x| x.full_name} %>
+</p>
+
+<!-- < % = link_to 'Edit', edit_bill_path(@bill) %> | -->
+<%= link_to 'Back', bills_path %>

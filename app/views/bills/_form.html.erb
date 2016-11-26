@@ -1,0 +1,59 @@
+<%= nested_form_for(@bill) do |f| %>
+  <% if @bill.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@bill.errors.count, "error") %> prohibited this bill from being saved:</h2>
+
+      <ul>
+      <% @bill.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :event %><br>
+    <%= f.select :event, options_for_select(BILL_EVENTS) %>
+  </div>
+  <!-- <div class="field">
+    < % = f.label :date %><br>
+    < % = f.text_field :date %>
+  </div> -->
+  <div class="field">
+    <%= f.label :location %><br>
+    <%= f.text_field :location %>
+  </div>
+  <div class="field">
+    <%= f.label :total_amount %><br>
+    <%= f.text_field :total_amount %>
+  </div>
+  <div class="field">
+    <%= f.label :splits_in %><br>
+    <%= f.text_field :splits_in %>
+  </div>
+
+  <%= f.fields_for :payers do |payer_form| %>
+    <div class="field">
+      <%= payer_form.label :amount_paid %><br>
+      <%= payer_form.text_field :amount_paid %>
+      By
+      <%= payer_form.collection_select :user_id, User.all, :id, :full_name, prompt: true %>
+      <%= payer_form.link_to_remove "Remove" %>
+    </div>
+  <% end %>
+  <p><%= f.link_to_add "Add Payer", :payers %></p>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  var data = <%= raw @split_in_users.collect{|x| {id: x.id.to_s, text: x.full_name} }.to_json %>;
+  $("#bill_splits_in").select2({
+    placeholder: "Select users",
+    data: data,
+    multiple: true
+  });
+  // $("#bill_splits_in").select2("val", $("#bill_splits_in").select2("val"));
+</script>
